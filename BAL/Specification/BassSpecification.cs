@@ -11,7 +11,9 @@ namespace BLL.Specification
     public class BassSpecification<T> : ISpecification<T> where T : BassEntity
     {
         public Expression<Func<T, bool>> Criteria { get; set;}
-        public List<Expression<Func<T, object>>> Includes { get; set;} = new List<Expression<Func<T, object>>>();
+        //public List<Expression<Func<T, object>>> Includes { get; set;} = new List<Expression<Func<T, object>>>();
+        public List<Func<IQueryable<T>, IQueryable<T>>> IncludeExpressions { get; private set; }
+            = new List<Func<IQueryable<T>, IQueryable<T>>>();
         public BassSpecification(Expression<Func<T, bool>> CriteriaExpression)
         {
             this.Criteria = CriteriaExpression;

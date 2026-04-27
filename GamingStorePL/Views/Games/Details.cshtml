@@ -1,0 +1,56 @@
+﻿@model GameVM
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row mt-3">
+    <div class="col-md-4">
+        <img src="~/Files/@Model.Cover" class="img-fluid rounded shadow"
+             onerror="this.src='/images/placeholder.png'" />
+    </div>
+
+    <div class="col-md-8">
+        <h3>@Model.Name</h3>
+        <hr />
+
+        <dl class="row">
+            <dt class="col-sm-3">Category</dt>
+            <dd class="col-sm-9">
+                <span class="badge bg-secondary">@Model.Category</span>
+            </dd>
+
+            <dt class="col-sm-3">Price</dt>
+            <dd class="col-sm-9">$@Model.Price.ToString("F2")</dd>
+
+            <dt class="col-sm-3">Quantity</dt>
+            <dd class="col-sm-9">@Model.Quantity</dd>
+
+            <dt class="col-sm-3">Devices</dt>
+            <dd class="col-sm-9">
+                @foreach (var device in Model.Devices)
+                {
+                    <span class="badge bg-primary me-1">@device</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+        </dl>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning ms-2">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+        <form asp-action="Delete" asp-controller="Games" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-danger ms-2"
+                    onclick="return confirm('Are you sure you want to delete @Model.Name?')">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+        </form>
+       
+    </div>
+</div>

@@ -15,7 +15,7 @@ namespace BLL.Specification
             var Quary = InputQuary;
             if(specification.Criteria is not  null)
                 Quary = Quary.Where(specification.Criteria);
-            Quary = specification.Includes.Aggregate(Quary, (Current, Include) => Current.Include(Include));
+            Quary = specification.IncludeExpressions.Aggregate(Quary, (current, include) => include(current));
             return Quary;
         }
     }

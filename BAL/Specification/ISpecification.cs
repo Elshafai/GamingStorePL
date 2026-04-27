@@ -11,6 +11,6 @@ namespace BLL.Specification
     public interface ISpecification<T> where T : BassEntity
     {
         public Expression<Func<T, bool>> Criteria { get; set; }
-        public List<Expression<Func<T, object>>> Includes { get; set; }
+        public List<Func<IQueryable<T>, IQueryable<T>>> IncludeExpressions { get; }
     }
 }

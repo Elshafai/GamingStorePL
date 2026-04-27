@@ -19,7 +19,8 @@ namespace GamingStorePL.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var games = gameService.GetAllGames();
+            return View(games);
         }
         public IActionResult Create()
         {
@@ -36,6 +37,45 @@ namespace GamingStorePL.Controllers
                 return View(model);
             }
             gameService.CreateGame(model);
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Details(int id)
+        {
+            var game = gameService.GetGameById(id);
+            if (game is null) return NotFound();
+            return View(game);
+        }
+        public IActionResult Edit(int id)
+        {
+            var model = gameService.PrepareEditGameVM(id);
+            if (model is null) return NotFound();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(EditGameVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var prepared = gameService.PrepareEditGameVM(model.Id);
+                if (prepared is null) return NotFound();
+
+                model.Categories = prepared.Categories;
+                model.Devices = prepared.Devices;
+                model.CurrentCover = prepared.CurrentCover;
+
+                return View(model);
+            }
+
+            gameService.UpdateGame(model);
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            gameService.DeleteGame(id);
             return RedirectToAction(nameof(Index));
         }
     }
